@@ -9,5 +9,5 @@
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate llamagen
 
-cd /orcd/home/002/isawu888/LlamaGen_6S976
+cd $HOME/LlamaGen_6S976
 python watermark/generate_dataset.py --start $START --end $END
