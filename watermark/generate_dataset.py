@@ -21,8 +21,7 @@ from torchvision.utils import save_image
 SECRET_KEY = b"cgz_llamagen_secret_2024"
 
 # Shared output directory — everyone writes here
-OUTPUT_DIR = "/orcd/home/002/isawu888/LlamaGen_6S976/samples"
-
+OUTPUT_DIR = "samples"
 def load_models(device):
     print("Loading VQ-VAE...")
     vq_model = VQ_models["VQ-16"](codebook_size=16384, codebook_embed_dim=8)
