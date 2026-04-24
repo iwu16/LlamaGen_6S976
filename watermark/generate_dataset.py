@@ -20,6 +20,9 @@ from torchvision.utils import save_image
 
 SECRET_KEY = b"cgz_llamagen_secret_2024"
 
+# Shared output directory — everyone writes here
+OUTPUT_DIR = "/orcd/home/002/isawu888/LlamaGen_6S976/samples"
+
 def load_models(device):
     print("Loading VQ-VAE...")
     vq_model = VQ_models["VQ-16"](codebook_size=16384, codebook_embed_dim=8)
@@ -52,16 +55,18 @@ def main():
     args = parser.parse_args()
 
     device = "cuda"
-    os.makedirs("samples/watermarked", exist_ok=True)
-    os.makedirs("samples/clean", exist_ok=True)
-    os.makedirs("samples/tokens", exist_ok=True)
+
+    # Create shared output directories
+    os.makedirs(f"{OUTPUT_DIR}/watermarked", exist_ok=True)
+    os.makedirs(f"{OUTPUT_DIR}/clean", exist_ok=True)
+    os.makedirs(f"{OUTPUT_DIR}/tokens", exist_ok=True)
 
     vq_model, gpt_model = load_models(device)
 
     qzshape = [1, 8, 24, 24]
 
     for i in range(args.start, args.end + 1):
-        class_label = i % 1000   # cycle through ImageNet classes
+        class_label = i % 1000
         c_indices = torch.tensor([class_label], device=device)
 
         print(f"[{i}/{args.end}] class {class_label}")
@@ -81,18 +86,14 @@ def main():
             pixels_wm = vq_model.decode_code(token_grid_wm, qzshape)
             pixels_wm = (pixels_wm.clamp(-1, 1) + 1) / 2
 
-        save_image(pixels_wm, f"samples/watermarked/{i:05d}.png")
+        save_image(pixels_wm, f"{OUTPUT_DIR}/watermarked/{i:05d}.png")
+        torch.save(generated_list, f"{OUTPUT_DIR}/tokens/wm_{i:05d}.pt")
 
-        # save token sequence for detector
-        torch.save(generated_list, f"samples/tokens/wm_{i:05d}.pt")
-
-        # quick detection check
         result = detect(generated_list, SECRET_KEY)
         print(f"  watermark detected: {result['detected']}, "
-              f"score: {result['score']}/{result['expected_wm']:.0f}, "
-              f"z: {(result['score']-result['expected_clean']):.1f}")
+              f"score: {result['score']}/{result['expected_wm']:.0f}")
 
-        # --- Clean image (same class, different sample) ---
+        # --- Clean image ---
         with torch.no_grad():
             gpt_model.setup_caches(
                 max_batch_size=1,
@@ -111,10 +112,10 @@ def main():
             pixels_clean = vq_model.decode_code(token_grid_clean, qzshape)
             pixels_clean = (pixels_clean.clamp(-1, 1) + 1) / 2
 
-        save_image(pixels_clean, f"samples/clean/{i:05d}.png")
-        torch.save(tokens_clean[0].tolist(), f"samples/tokens/clean_{i:05d}.pt")
+        save_image(pixels_clean, f"{OUTPUT_DIR}/clean/{i:05d}.png")
+        torch.save(tokens_clean[0].tolist(), f"{OUTPUT_DIR}/tokens/clean_{i:05d}.pt")
 
-        print(f"  saved watermarked + clean image {i:05d}.png")
+        print(f"  saved {i:05d}.png")
 
     print(f"\nDone! Generated images {args.start} to {args.end}")
 
