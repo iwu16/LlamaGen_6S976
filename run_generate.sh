@@ -6,5 +6,8 @@
 #SBATCH --time=06:00:00
 #SBATCH --output=logs/generate_%j.out
 
+source ~/miniconda3/etc/profile.d/conda.sh
 conda activate llamagen
+
+cd /orcd/home/002/isawu888/LlamaGen_6S976
 python watermark/generate_dataset.py --start $START --end $END
