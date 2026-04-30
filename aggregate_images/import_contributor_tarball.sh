@@ -2,15 +2,16 @@
 set -euo pipefail
 
 if [[ $# -ne 2 ]]; then
-  echo "Usage: bash aggregate_images/import_contributor_tarball.sh /path/to/contributor_pngs.tar.gz contributor_name" >&2
+  echo "Usage: bash aggregate_images/import_contributor_tarball.sh /path/to/contributor_samples.tar.gz contributor_name" >&2
   exit 1
 fi
 
 TARBALL="$1"
 CONTRIBUTOR="$2"
-DATASET_ROOT="${REDTEAM_DATASET_ROOT:-/home/reugene/orcd/pool/redteam_images}"
+DATASET_ROOT="${AGGREGATED_SAMPLES_ROOT:-$PWD/aggregated_samples}"
 DEST="$DATASET_ROOT/incoming/$CONTRIBUTOR"
 TMPDIR="$(mktemp -d)"
+CATEGORIES=(clean tokens watermarked)
 
 cleanup() {
   rm -rf "$TMPDIR"
@@ -40,12 +41,16 @@ if [[ ! -d "$TMPDIR/$CONTRIBUTOR" ]]; then
   exit 1
 fi
 
-rsync -av --include='*/' --include='*.png' --include='*.PNG' --exclude='*' \
-  "$TMPDIR/$CONTRIBUTOR/" "$DEST/"
+for category in "${CATEGORIES[@]}"; do
+  if [[ -d "$TMPDIR/$CONTRIBUTOR/$category" ]]; then
+    mkdir -p "$DEST/$category"
+    rsync -a "$TMPDIR/$CONTRIBUTOR/$category/" "$DEST/$category/"
+  fi
+done
 
-find "$DEST" -type f \( -iname '*.png' \) | sort \
+find "$DEST" -type f | sort \
   > "$DATASET_ROOT/manifests/${CONTRIBUTOR}_files.txt"
 
 count="$(wc -l < "$DATASET_ROOT/manifests/${CONTRIBUTOR}_files.txt")"
 
-echo "Imported $count PNG files for $CONTRIBUTOR into $DEST"
+echo "Imported $count sample files for $CONTRIBUTOR into $DEST"

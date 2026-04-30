@@ -1,92 +1,127 @@
-# Aggregate image workflow
+# Aggregate sample workflow
 
-This workflow lets three individual ORCD users combine PNGs without PI shared pool.
-Each contributor packages their PNGs into one tarball. Reugene imports those tarballs
-into `/home/reugene/orcd/pool/redteam_images`, then builds a combined `all_pngs`
-folder with contributor-prefixed filenames.
+This workflow lets each collaborator build the same local aggregate dataset without
+touching the original `samples/` folder and without committing generated samples to
+GitHub.
 
-## 1. Reugene: initialize the dataset folder
-
-From this repository:
-
-```bash
-bash aggregate_images/setup_reugene_dataset.sh
-```
-
-By default this copies clean PNGs from:
+The aggregate folder is local to each clone:
 
 ```text
-/home/reugene/LlamaGen_6S976/samples/clean
+LlamaGen_6S976/aggregated_samples/
+  clean/
+  tokens/
+  watermarked/
+  incoming/
+    reugene/
+      clean/
+      tokens/
+      watermarked/
+    maureenz/
+      clean/
+      tokens/
+      watermarked/
+    isawu888/
+      clean/
+      tokens/
+      watermarked/
+  tarballs/
+  manifests/
+```
+
+`samples/` remains the source folder. `aggregated_samples/` is the combined local
+folder and is ignored by Git.
+
+## 1. Each collaborator initializes their own local samples
+
+From the repository root:
+
+```bash
+bash aggregate_images/setup_reugene_dataset.sh samples reugene
+```
+
+Replace `reugene` with your contributor name:
+
+```bash
+bash aggregate_images/setup_reugene_dataset.sh samples maureenz
+bash aggregate_images/setup_reugene_dataset.sh samples isawu888
+```
+
+This copies your local:
+
+```text
+samples/clean
+samples/tokens
+samples/watermarked
 ```
 
 into:
 
 ```text
-/home/reugene/orcd/pool/redteam_images/incoming/reugene
+aggregated_samples/incoming/<your_name>/
 ```
 
-If you want to use a different PNG folder:
+## 2. Each collaborator packages their own samples
+
+From the repository root:
 
 ```bash
-bash aggregate_images/setup_reugene_dataset.sh /path/to/reugene/pngs
+bash aggregate_images/package_pngs.sh samples reugene
 ```
 
-## 2. Maureenz and isawu888: package their PNGs
-
-Send them this script:
+Replace `reugene` with your contributor name. The script creates:
 
 ```text
-aggregate_images/package_pngs.sh
+reugene_samples.tar.gz
 ```
 
-They run:
-
-```bash
-bash package_pngs.sh /path/to/their/pngs maureenz
-bash package_pngs.sh /path/to/their/pngs isawu888
-```
-
-That creates:
+Send that tarball to the other two collaborators with `scp`, Globus, or OnDemand
+upload. Each collaborator should place received tarballs under:
 
 ```text
-maureenz_pngs.tar.gz
-isawu888_pngs.tar.gz
+aggregated_samples/tarballs/
 ```
 
-They can send those tarballs to you with `scp`, Globus, or OnDemand upload.
+## 3. Each collaborator imports the other tarballs
 
-Example `scp` from their local computer:
+Example:
 
 ```bash
-scp maureenz_pngs.tar.gz reugene@orcd-login.mit.edu:/home/reugene/orcd/pool/redteam_images/tarballs/
-scp isawu888_pngs.tar.gz reugene@orcd-login.mit.edu:/home/reugene/orcd/pool/redteam_images/tarballs/
+bash aggregate_images/import_contributor_tarball.sh aggregated_samples/tarballs/maureenz_samples.tar.gz maureenz
+bash aggregate_images/import_contributor_tarball.sh aggregated_samples/tarballs/isawu888_samples.tar.gz isawu888
 ```
 
-## 3. Reugene: import each tarball
+Each import writes to:
 
-After the tarballs are in `/home/reugene/orcd/pool/redteam_images/tarballs`:
-
-```bash
-bash aggregate_images/import_contributor_tarball.sh /home/reugene/orcd/pool/redteam_images/tarballs/maureenz_pngs.tar.gz maureenz
-bash aggregate_images/import_contributor_tarball.sh /home/reugene/orcd/pool/redteam_images/tarballs/isawu888_pngs.tar.gz isawu888
+```text
+aggregated_samples/incoming/<contributor>/
 ```
 
-## 4. Reugene: build the combined folder
+## 4. Each collaborator builds their local aggregate folder
 
 ```bash
 bash aggregate_images/build_all_pngs.sh
 ```
 
-The combined folder will be:
+The final combined folders are:
 
 ```text
-/home/reugene/orcd/pool/redteam_images/all_pngs
+aggregated_samples/clean
+aggregated_samples/tokens
+aggregated_samples/watermarked
 ```
 
-Verify the final count:
+Files are prefixed by contributor name, for example:
+
+```text
+aggregated_samples/clean/reugene_00666.png
+aggregated_samples/tokens/reugene_clean_00666.pt
+aggregated_samples/watermarked/reugene_00666.png
+```
+
+Verify counts:
 
 ```bash
-find /home/reugene/orcd/pool/redteam_images/all_pngs -type f -iname '*.png' | wc -l
+find aggregated_samples/clean -type f | wc -l
+find aggregated_samples/tokens -type f | wc -l
+find aggregated_samples/watermarked -type f | wc -l
 ```
-
-Expected count is `1000`.
