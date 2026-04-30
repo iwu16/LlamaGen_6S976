@@ -2,23 +2,24 @@
 set -euo pipefail
 
 if [[ $# -ne 2 ]]; then
-  echo "Usage: bash package_pngs.sh /path/to/pngs contributor_name" >&2
-  echo "Example: bash package_pngs.sh /home/maureenz/orcd/pool/my_samples maureenz" >&2
+  echo "Usage: bash package_pngs.sh /path/to/samples contributor_name" >&2
+  echo "Example: bash package_pngs.sh /home/maureenz/LlamaGen_6S976/samples maureenz" >&2
   exit 1
 fi
 
-SOURCE_DIR="$1"
+SOURCE_ROOT="$1"
 CONTRIBUTOR="$2"
-OUT="${CONTRIBUTOR}_pngs.tar.gz"
+OUT="${CONTRIBUTOR}_samples.tar.gz"
 TMPDIR="$(mktemp -d)"
+CATEGORIES=(clean tokens watermarked)
 
 cleanup() {
   rm -rf "$TMPDIR"
 }
 trap cleanup EXIT
 
-if [[ ! -d "$SOURCE_DIR" ]]; then
-  echo "Source directory does not exist: $SOURCE_DIR" >&2
+if [[ ! -d "$SOURCE_ROOT" ]]; then
+  echo "Source directory does not exist: $SOURCE_ROOT" >&2
   exit 1
 fi
 
@@ -31,22 +32,28 @@ esac
 
 mkdir -p "$TMPDIR/$CONTRIBUTOR"
 
-find "$SOURCE_DIR" -type f \( -iname '*.png' \) -print0 |
-  while IFS= read -r -d '' file; do
-    base="$(basename "$file")"
-    cp -n "$file" "$TMPDIR/$CONTRIBUTOR/$base"
-  done
+total=0
+for category in "${CATEGORIES[@]}"; do
+  source_dir="$SOURCE_ROOT/$category"
+  dest_dir="$TMPDIR/$CONTRIBUTOR/$category"
+  mkdir -p "$dest_dir"
 
-count="$(find "$TMPDIR/$CONTRIBUTOR" -type f -iname '*.png' | wc -l)"
+  if [[ ! -d "$source_dir" ]]; then
+    echo "Warning: missing category folder, skipping: $source_dir" >&2
+    continue
+  fi
 
-if [[ "$count" -eq 0 ]]; then
-  echo "No PNG files found under: $SOURCE_DIR" >&2
+  rsync -a "$source_dir/" "$dest_dir/"
+  count="$(find "$dest_dir" -type f | wc -l)"
+  total=$((total + count))
+done
+
+if [[ "$total" -eq 0 ]]; then
+  echo "No sample files found under: $SOURCE_ROOT" >&2
   exit 1
 fi
 
 tar -C "$TMPDIR" -czf "$OUT" "$CONTRIBUTOR"
 
-echo "Created $OUT with $count PNG files."
-echo "Send it to reugene, for example:"
-echo "scp $OUT reugene@orcd-login.mit.edu:/home/reugene/orcd/pool/redteam_images/tarballs/"
-
+echo "Created $OUT with $total sample files."
+echo "Send it to the other collaborators so they can place it under aggregated_samples/tarballs/."
