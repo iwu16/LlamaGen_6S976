@@ -23,3 +23,50 @@ python watermark/download_weights.py
 
 ## 6. Verify everything works
 python watermark/verify.py
+
+## 7. Shared evaluation and attack ownership
+
+Shared metric functions live in:
+
+```text
+watermark/evaluate.py
+watermark/metrics.py
+```
+
+The main functions in `watermark/evaluate.py` are:
+
+```text
+compute_tpr_fpr(...)
+compute_watermark_survival(...)
+compute_quality_metrics(...)
+```
+
+Attack code lives in separate folders to avoid merge conflicts:
+
+```text
+watermark/attack/token_regeneration/run.py
+watermark/attack/vqvae_roundtrip/run.py
+watermark/attack/diffusion_regeneration/run.py
+```
+
+The shared output contract is:
+
+```text
+attack_outputs/<attack_name>/images/*.png
+attack_outputs/<attack_name>/tokens/*.pt
+```
+
+Each attack script should generate its outputs, then import only the metric
+functions it needs:
+
+```python
+from watermark.evaluate import compute_tpr_fpr
+from watermark.evaluate import compute_watermark_survival
+from watermark.evaluate import compute_quality_metrics
+```
+
+Run an attack as a module, for example:
+
+```bash
+python -m watermark.attack.diffusion_regeneration.run
+```
