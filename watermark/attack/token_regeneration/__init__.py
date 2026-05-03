@@ -56,10 +56,12 @@ def main():
     device = "cuda"
 
     os.makedirs(f"{OUTPUT_DIR}/attack1_regen", exist_ok=True)
-
+    print("Loading models...", flush=True)
     vq_model, gpt_model = load_models(device)
+    print("Models loaded!", flush=True)
     loss_fn = lpips.LPIPS(net='alex').to(device)
-
+    print("LPIPS loaded!", flush=True)
+    print(f"Starting loop from {args.start} to {args.end}", flush=True)
     # transform for LPIPS — needs [-1, 1] range
     to_tensor = transforms.Compose([
         transforms.ToTensor(),
@@ -78,7 +80,7 @@ def main():
             print(f"Skipping {i} — no token file found")
             continue
 
-        print(f"[{i}/{args.end}] class {class_label}")
+        print(f"[{i}/{args.end}] class {class_label}", flush=True)
 
         # load original watermarked tokens
         wm_tokens = torch.load(wm_token_path)  # this is generated_list from cgz_generate
@@ -134,7 +136,7 @@ def main():
 
         print(f"  detected: {result['detected']}, "
               f"score: {result['score']}/{result['expected_wm']:.0f}, "
-              f"lpips: {lpips_score:.4f}")
+              f"lpips: {lpips_score:.4f}", flush=True)
 
     # save all results to json
     out_path = f"{OUTPUT_DIR}/attack1_results_{args.start}_{args.end}.json"
