@@ -10,4 +10,4 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate llamagen
 cd $HOME/LlamaGen_6S976
 
-python watermark/attack_regen.py --start $START --end $END
+python -m watermark.attack.token_regeneration --start $START --end $END
