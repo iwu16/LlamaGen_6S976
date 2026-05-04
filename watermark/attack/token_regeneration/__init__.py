@@ -24,6 +24,7 @@ from watermark.cgz_watermark import detect
 SECRET_KEY = b"cgz_llamagen_secret_2024"
 OUTPUT_DIR = "samples"
 TOKENS_DIR = "samples/tokens"
+REGEN_TOKENS_DIR = "samples/tokens_regen"
 
 def load_models(device):
     # exact same as generate_dataset.py
@@ -56,6 +57,7 @@ def main():
     device = "cuda"
 
     os.makedirs(f"{OUTPUT_DIR}/attack1_regen", exist_ok=True)
+    os.makedirs(REGEN_TOKENS_DIR, exist_ok=True)
     print("Loading models...", flush=True)
     vq_model, gpt_model = load_models(device)
     print("Models loaded!", flush=True)
@@ -109,8 +111,9 @@ def main():
             pixels_regen = vq_model.decode_code(token_grid, qzshape)
             pixels_regen = (pixels_regen.clamp(-1, 1) + 1) / 2
 
-        # save regenerated image
+        # save regenerated image and tokens
         save_image(pixels_regen, f"{OUTPUT_DIR}/attack1_regen/{i:05d}.png")
+        torch.save(tokens_regen[0], f"{REGEN_TOKENS_DIR}/{i:05d}.pt")
 
         # --- Run detector on regenerated tokens ---
         regen_token_list = tokens_regen[0].tolist()
