@@ -33,7 +33,7 @@ def main() -> None:
     parser.add_argument("--results", type=Path, default=Path("results/token_regeneration.json"))
     args = parser.parse_args()
 
-    run_attack(args.root, args.output_dir)
+#    run_attack(args.root, args.output_dir)
     report = {
         "baseline_detection": compute_tpr_fpr(
             args.root,
