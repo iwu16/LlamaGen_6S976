@@ -1,0 +1,37 @@
+{
+  "baseline_detection": {
+    "clean": {
+      "count": 667,
+      "detected": 0,
+      "rate": 0.0,
+      "mean_score": 286.43328335832086,
+      "mean_threshold": 322.2915785436905,
+      "mean_fraction_green": 0.5007574883886732
+    },
+    "watermarked": {
+      "count": 667,
+      "detected": 667,
+      "rate": 1.0,
+      "mean_score": 572.0,
+      "mean_threshold": 322.2915785436905,
+      "mean_fraction_green": 1.0
+    },
+    "true_positive_rate": 1.0,
+    "false_positive_rate": 0.0
+  },
+  "attacked_detection": {
+    "count": 1000,
+    "detected": 0,
+    "rate": 0.0,
+    "mean_score": 286.145,
+    "mean_threshold": 322.2915785436858,
+    "mean_fraction_green": 0.5002534965034969,
+    "survival_rate": 0.0
+  },
+  "attacked_quality": {
+    "reference_images": "aggregated_samples/watermarked",
+    "attacked_images": "attack_outputs/token_regeneration/images",
+    "lpips": 0.672770867228508,
+    "fid": 43.17229592155502
+  }
+}
