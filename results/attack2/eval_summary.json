@@ -1,0 +1,10 @@
+{
+  "watermark_survival_rate": 0.908,
+  "mean_fraction_green": 0.696,
+  "lpips": 0.0178,
+  "fid": 2.91,
+  "tpr_before": 1.0,
+  "fpr_before": 0.0,
+  "tpr_after": 0.908,
+  "fpr_after": 0.0
+}
