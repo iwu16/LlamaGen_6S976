@@ -1,0 +1,5 @@
+attack,auc,op_fpr,op_tpr
+No attack,1.0000,0.0000,1.0000
+VQ-VAE roundtrip,0.9903,0.0000,0.9080
+Diffusion regen s=0.04,0.5151,0.0000,0.0000
+Token regeneration,0.4946,0.0000,0.0000
