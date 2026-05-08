@@ -1,0 +1,4 @@
+attack,input_required,uses_ar_model,ar_queries_per_image,uses_vqvae_encoder,uses_diffusion_model,uses_secret_key,preserves_original_image,access_note
+Token regeneration,class label / generation condition,yes,576,no,no,no,no,Fresh clean class-conditional sample; exact CGZ-style latent removal.
+VQ-VAE roundtrip,watermarked image,no,0,yes,no,no,yes,Zero AR queries; tests tokenizer bottleneck directly.
+Diffusion regeneration,watermarked image,no,0,"yes, for detection/evaluation",yes,no,strength-dependent,Zero AR queries; uses external pixel-space generative model.

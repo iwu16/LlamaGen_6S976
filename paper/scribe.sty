@@ -1,0 +1,57 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{scribe}[2026/05/07 Minimal paper style]
+
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{booktabs}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\RequirePackage[numbers]{natbib}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\@lecturetitle}{}
+\newcommand{\@lecturedate}{}
+\newcommand{\@authornames}{}
+\newcommand{\lecturetitle}[1]{\gdef\@lecturetitle{#1}}
+\newcommand{\lecturedate}[1]{\gdef\@lecturedate{#1}}
+\newcommand{\authorname}[1]{%
+  \ifx\@authornames\@empty
+    \gdef\@authornames{#1}%
+  \else
+    \g@addto@macro\@authornames{, #1}%
+  \fi
+}
+\newcommand{\maketitleblock}{%
+  \begin{center}
+    {\Large\bfseries \@lecturetitle\par}
+    \vspace{0.5em}
+    {\large \@authornames\par}
+    \vspace{0.25em}
+    {\@lecturedate\par}
+  \end{center}
+  \vspace{1em}
+}
+
+\newcommand{\Prob}[2][]{\Pr_{#1}\!\left[#2\right]}
+\newcommand{\E}[2][]{\mathbb{E}_{#1}\!\left[#2\right]}
+\newcommand{\Var}[2][]{\mathrm{Var}_{#1}\!\left[#2\right]}

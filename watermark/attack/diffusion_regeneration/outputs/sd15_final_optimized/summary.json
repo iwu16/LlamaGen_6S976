@@ -1,0 +1,110 @@
+{
+  "root": "aggregated_samples",
+  "output_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized",
+  "model_id": "runwayml/stable-diffusion-v1-5",
+  "negative_prompt": "low quality, blurry, distorted",
+  "num_images": 1000,
+  "reference_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/reference_watermarked",
+  "baseline_detection": {
+    "clean": {
+      "count": 1000,
+      "detected": 0,
+      "rate": 0.0,
+      "mean_score": 286.264,
+      "mean_threshold": 322.2915785436858,
+      "mean_fraction_green": 0.5004615384615392
+    },
+    "watermarked": {
+      "count": 1000,
+      "detected": 1000,
+      "rate": 1.0,
+      "mean_score": 572.0,
+      "mean_threshold": 322.2915785436858,
+      "mean_fraction_green": 1.0
+    },
+    "true_positive_rate": 1.0,
+    "false_positive_rate": 0.0
+  },
+  "strengths": {
+    "strength_0_010": {
+      "strength": 0.01,
+      "images_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_010/images",
+      "tokens_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_010/tokens",
+      "attacked_detection": {
+        "count": 1000,
+        "detected": 273,
+        "rate": 0.273,
+        "mean_score": 311.177,
+        "mean_threshold": 322.2915785436858,
+        "mean_fraction_green": 0.5440157342657341,
+        "survival_rate": 0.273
+      },
+      "attacked_quality": {
+        "reference_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/reference_watermarked",
+        "attacked_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_010/images",
+        "lpips": 0.028556483598891645,
+        "fid": 5.263844225471701
+      }
+    },
+    "strength_0_020": {
+      "strength": 0.02,
+      "images_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_020/images",
+      "tokens_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_020/tokens",
+      "attacked_detection": {
+        "count": 1000,
+        "detected": 273,
+        "rate": 0.273,
+        "mean_score": 311.177,
+        "mean_threshold": 322.2915785436858,
+        "mean_fraction_green": 0.5440157342657341,
+        "survival_rate": 0.273
+      },
+      "attacked_quality": {
+        "reference_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/reference_watermarked",
+        "attacked_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_020/images",
+        "lpips": 0.028556483598891645,
+        "fid": 5.263844225471701
+      }
+    },
+    "strength_0_040": {
+      "strength": 0.04,
+      "images_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_040/images",
+      "tokens_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_040/tokens",
+      "attacked_detection": {
+        "count": 1000,
+        "detected": 0,
+        "rate": 0.0,
+        "mean_score": 287.182,
+        "mean_threshold": 322.2915785436858,
+        "mean_fraction_green": 0.502066433566434,
+        "survival_rate": 0.0
+      },
+      "attacked_quality": {
+        "reference_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/reference_watermarked",
+        "attacked_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_040/images",
+        "lpips": 0.0475471176058054,
+        "fid": 8.06142032328745
+      }
+    },
+    "strength_0_080": {
+      "strength": 0.08,
+      "images_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_080/images",
+      "tokens_dir": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_080/tokens",
+      "attacked_detection": {
+        "count": 1000,
+        "detected": 1,
+        "rate": 0.001,
+        "mean_score": 286.061,
+        "mean_threshold": 322.2915785436858,
+        "mean_fraction_green": 0.5001066433566427,
+        "survival_rate": 0.001
+      },
+      "attacked_quality": {
+        "reference_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/reference_watermarked",
+        "attacked_images": "watermark/attack/diffusion_regeneration/outputs/sd15_final_optimized/strength_0_080/images",
+        "lpips": 0.09938082545995712,
+        "fid": 22.421798307491088
+      }
+    }
+  }
+}

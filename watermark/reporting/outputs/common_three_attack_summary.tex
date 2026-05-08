@@ -1,0 +1,9 @@
+\begin{tabular}{llrrrrr}
+\toprule
+Attack & Setting & Survival & LPIPS & FID & Score & Token change \\
+\midrule
+Token regeneration & fresh clean sample & 0.0\% & 0.673 & 43.17 & 286.1 & 100.0\% \\
+VQ-VAE roundtrip & decode/re-encode & 90.8\% & 0.026 & 2.91 & 398.0 & 22.3\% \\
+Diffusion regeneration & strength=0.04 & 0.0\% & 0.048 & 8.06 & 287.2 & 75.2\% \\
+\bottomrule
+\end{tabular}

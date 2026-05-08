@@ -1,0 +1,4 @@
+attack,setting,count,survival_rate,removal_rate,mean_score,mean_threshold,lpips,fid,mean_tokens_changed_pct,note
+Token regeneration,fresh clean sample,1000,0.0,1.0,286.145,322.2915785436858,0.672770867228508,43.17229592155502,100.0,Fresh class-conditional sample; token change is not a preservation metric.
+VQ-VAE roundtrip,decode/re-encode,1000,0.908,0.09199999999999997,398.022,322.2915785436869,0.026028827558504417,2.91,22.32218000000001,"Per-image LPIPS, token changes, and detection scores are available."
+Diffusion regeneration,strength=0.04,1000,0.0,1.0,287.182,322.2915785436858,0.0475471176058054,8.06142032328745,75.24079861111103,Per-strength aggregate LPIPS/FID; per-image scores available.
