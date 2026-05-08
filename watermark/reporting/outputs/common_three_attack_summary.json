@@ -1,0 +1,41 @@
+[
+  {
+    "attack": "Token regeneration",
+    "setting": "fresh clean sample",
+    "count": 1000,
+    "survival_rate": 0.0,
+    "removal_rate": 1.0,
+    "mean_score": 286.145,
+    "mean_threshold": 322.2915785436858,
+    "lpips": 0.672770867228508,
+    "fid": 43.17229592155502,
+    "mean_tokens_changed_pct": 100.0,
+    "note": "Fresh class-conditional sample; token change is not a preservation metric."
+  },
+  {
+    "attack": "VQ-VAE roundtrip",
+    "setting": "decode/re-encode",
+    "count": 1000,
+    "survival_rate": 0.908,
+    "removal_rate": 0.09199999999999997,
+    "mean_score": 398.022,
+    "mean_threshold": 322.2915785436869,
+    "lpips": 0.026028827558504417,
+    "fid": 2.91,
+    "mean_tokens_changed_pct": 22.32218000000001,
+    "note": "Per-image LPIPS, token changes, and detection scores are available."
+  },
+  {
+    "attack": "Diffusion regeneration",
+    "setting": "strength=0.04",
+    "count": 1000,
+    "survival_rate": 0.0,
+    "removal_rate": 1.0,
+    "mean_score": 287.182,
+    "mean_threshold": 322.2915785436858,
+    "lpips": 0.0475471176058054,
+    "fid": 8.06142032328745,
+    "mean_tokens_changed_pct": 75.24079861111103,
+    "note": "Per-strength aggregate LPIPS/FID; per-image scores available."
+  }
+]

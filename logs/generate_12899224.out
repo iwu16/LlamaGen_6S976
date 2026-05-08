@@ -1,0 +1,513 @@
+/orcd/home/002/isawu888/LlamaGen_6S976/watermark/generate_dataset.py:28: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load("pretrained_models/vq_ds16_c2i.pt", map_location=device)
+/orcd/home/002/isawu888/LlamaGen_6S976/watermark/generate_dataset.py:40: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load("pretrained_models/c2i_L_384.pt", map_location=device)
+/home/isawu888/miniconda3/envs/llamagen/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+Loading VQ-VAE...
+VQ-VAE loaded.
+Loading LlamaGen-L...
+LlamaGen loaded.
+[0/166] class 0
+  watermark detected: True, score: 572/572
+  saved 00000.png
+[1/166] class 1
+  watermark detected: True, score: 572/572
+  saved 00001.png
+[2/166] class 2
+  watermark detected: True, score: 572/572
+  saved 00002.png
+[3/166] class 3
+  watermark detected: True, score: 572/572
+  saved 00003.png
+[4/166] class 4
+  watermark detected: True, score: 572/572
+  saved 00004.png
+[5/166] class 5
+  watermark detected: True, score: 572/572
+  saved 00005.png
+[6/166] class 6
+  watermark detected: True, score: 572/572
+  saved 00006.png
+[7/166] class 7
+  watermark detected: True, score: 572/572
+  saved 00007.png
+[8/166] class 8
+  watermark detected: True, score: 572/572
+  saved 00008.png
+[9/166] class 9
+  watermark detected: True, score: 572/572
+  saved 00009.png
+[10/166] class 10
+  watermark detected: True, score: 572/572
+  saved 00010.png
+[11/166] class 11
+  watermark detected: True, score: 572/572
+  saved 00011.png
+[12/166] class 12
+  watermark detected: True, score: 572/572
+  saved 00012.png
+[13/166] class 13
+  watermark detected: True, score: 572/572
+  saved 00013.png
+[14/166] class 14
+  watermark detected: True, score: 572/572
+  saved 00014.png
+[15/166] class 15
+  watermark detected: True, score: 572/572
+  saved 00015.png
+[16/166] class 16
+  watermark detected: True, score: 572/572
+  saved 00016.png
+[17/166] class 17
+  watermark detected: True, score: 572/572
+  saved 00017.png
+[18/166] class 18
+  watermark detected: True, score: 572/572
+  saved 00018.png
+[19/166] class 19
+  watermark detected: True, score: 572/572
+  saved 00019.png
+[20/166] class 20
+  watermark detected: True, score: 572/572
+  saved 00020.png
+[21/166] class 21
+  watermark detected: True, score: 572/572
+  saved 00021.png
+[22/166] class 22
+  watermark detected: True, score: 572/572
+  saved 00022.png
+[23/166] class 23
+  watermark detected: True, score: 572/572
+  saved 00023.png
+[24/166] class 24
+  watermark detected: True, score: 572/572
+  saved 00024.png
+[25/166] class 25
+  watermark detected: True, score: 572/572
+  saved 00025.png
+[26/166] class 26
+  watermark detected: True, score: 572/572
+  saved 00026.png
+[27/166] class 27
+  watermark detected: True, score: 572/572
+  saved 00027.png
+[28/166] class 28
+  watermark detected: True, score: 572/572
+  saved 00028.png
+[29/166] class 29
+  watermark detected: True, score: 572/572
+  saved 00029.png
+[30/166] class 30
+  watermark detected: True, score: 572/572
+  saved 00030.png
+[31/166] class 31
+  watermark detected: True, score: 572/572
+  saved 00031.png
+[32/166] class 32
+  watermark detected: True, score: 572/572
+  saved 00032.png
+[33/166] class 33
+  watermark detected: True, score: 572/572
+  saved 00033.png
+[34/166] class 34
+  watermark detected: True, score: 572/572
+  saved 00034.png
+[35/166] class 35
+  watermark detected: True, score: 572/572
+  saved 00035.png
+[36/166] class 36
+  watermark detected: True, score: 572/572
+  saved 00036.png
+[37/166] class 37
+  watermark detected: True, score: 572/572
+  saved 00037.png
+[38/166] class 38
+  watermark detected: True, score: 572/572
+  saved 00038.png
+[39/166] class 39
+  watermark detected: True, score: 572/572
+  saved 00039.png
+[40/166] class 40
+  watermark detected: True, score: 572/572
+  saved 00040.png
+[41/166] class 41
+  watermark detected: True, score: 572/572
+  saved 00041.png
+[42/166] class 42
+  watermark detected: True, score: 572/572
+  saved 00042.png
+[43/166] class 43
+  watermark detected: True, score: 572/572
+  saved 00043.png
+[44/166] class 44
+  watermark detected: True, score: 572/572
+  saved 00044.png
+[45/166] class 45
+  watermark detected: True, score: 572/572
+  saved 00045.png
+[46/166] class 46
+  watermark detected: True, score: 572/572
+  saved 00046.png
+[47/166] class 47
+  watermark detected: True, score: 572/572
+  saved 00047.png
+[48/166] class 48
+  watermark detected: True, score: 572/572
+  saved 00048.png
+[49/166] class 49
+  watermark detected: True, score: 572/572
+  saved 00049.png
+[50/166] class 50
+  watermark detected: True, score: 572/572
+  saved 00050.png
+[51/166] class 51
+  watermark detected: True, score: 572/572
+  saved 00051.png
+[52/166] class 52
+  watermark detected: True, score: 572/572
+  saved 00052.png
+[53/166] class 53
+  watermark detected: True, score: 572/572
+  saved 00053.png
+[54/166] class 54
+  watermark detected: True, score: 572/572
+  saved 00054.png
+[55/166] class 55
+  watermark detected: True, score: 572/572
+  saved 00055.png
+[56/166] class 56
+  watermark detected: True, score: 572/572
+  saved 00056.png
+[57/166] class 57
+  watermark detected: True, score: 572/572
+  saved 00057.png
+[58/166] class 58
+  watermark detected: True, score: 572/572
+  saved 00058.png
+[59/166] class 59
+  watermark detected: True, score: 572/572
+  saved 00059.png
+[60/166] class 60
+  watermark detected: True, score: 572/572
+  saved 00060.png
+[61/166] class 61
+  watermark detected: True, score: 572/572
+  saved 00061.png
+[62/166] class 62
+  watermark detected: True, score: 572/572
+  saved 00062.png
+[63/166] class 63
+  watermark detected: True, score: 572/572
+  saved 00063.png
+[64/166] class 64
+  watermark detected: True, score: 572/572
+  saved 00064.png
+[65/166] class 65
+  watermark detected: True, score: 572/572
+  saved 00065.png
+[66/166] class 66
+  watermark detected: True, score: 572/572
+  saved 00066.png
+[67/166] class 67
+  watermark detected: True, score: 572/572
+  saved 00067.png
+[68/166] class 68
+  watermark detected: True, score: 572/572
+  saved 00068.png
+[69/166] class 69
+  watermark detected: True, score: 572/572
+  saved 00069.png
+[70/166] class 70
+  watermark detected: True, score: 572/572
+  saved 00070.png
+[71/166] class 71
+  watermark detected: True, score: 572/572
+  saved 00071.png
+[72/166] class 72
+  watermark detected: True, score: 572/572
+  saved 00072.png
+[73/166] class 73
+  watermark detected: True, score: 572/572
+  saved 00073.png
+[74/166] class 74
+  watermark detected: True, score: 572/572
+  saved 00074.png
+[75/166] class 75
+  watermark detected: True, score: 572/572
+  saved 00075.png
+[76/166] class 76
+  watermark detected: True, score: 572/572
+  saved 00076.png
+[77/166] class 77
+  watermark detected: True, score: 572/572
+  saved 00077.png
+[78/166] class 78
+  watermark detected: True, score: 572/572
+  saved 00078.png
+[79/166] class 79
+  watermark detected: True, score: 572/572
+  saved 00079.png
+[80/166] class 80
+  watermark detected: True, score: 572/572
+  saved 00080.png
+[81/166] class 81
+  watermark detected: True, score: 572/572
+  saved 00081.png
+[82/166] class 82
+  watermark detected: True, score: 572/572
+  saved 00082.png
+[83/166] class 83
+  watermark detected: True, score: 572/572
+  saved 00083.png
+[84/166] class 84
+  watermark detected: True, score: 572/572
+  saved 00084.png
+[85/166] class 85
+  watermark detected: True, score: 572/572
+  saved 00085.png
+[86/166] class 86
+  watermark detected: True, score: 572/572
+  saved 00086.png
+[87/166] class 87
+  watermark detected: True, score: 572/572
+  saved 00087.png
+[88/166] class 88
+  watermark detected: True, score: 572/572
+  saved 00088.png
+[89/166] class 89
+  watermark detected: True, score: 572/572
+  saved 00089.png
+[90/166] class 90
+  watermark detected: True, score: 572/572
+  saved 00090.png
+[91/166] class 91
+  watermark detected: True, score: 572/572
+  saved 00091.png
+[92/166] class 92
+  watermark detected: True, score: 572/572
+  saved 00092.png
+[93/166] class 93
+  watermark detected: True, score: 572/572
+  saved 00093.png
+[94/166] class 94
+  watermark detected: True, score: 572/572
+  saved 00094.png
+[95/166] class 95
+  watermark detected: True, score: 572/572
+  saved 00095.png
+[96/166] class 96
+  watermark detected: True, score: 572/572
+  saved 00096.png
+[97/166] class 97
+  watermark detected: True, score: 572/572
+  saved 00097.png
+[98/166] class 98
+  watermark detected: True, score: 572/572
+  saved 00098.png
+[99/166] class 99
+  watermark detected: True, score: 572/572
+  saved 00099.png
+[100/166] class 100
+  watermark detected: True, score: 572/572
+  saved 00100.png
+[101/166] class 101
+  watermark detected: True, score: 572/572
+  saved 00101.png
+[102/166] class 102
+  watermark detected: True, score: 572/572
+  saved 00102.png
+[103/166] class 103
+  watermark detected: True, score: 572/572
+  saved 00103.png
+[104/166] class 104
+  watermark detected: True, score: 572/572
+  saved 00104.png
+[105/166] class 105
+  watermark detected: True, score: 572/572
+  saved 00105.png
+[106/166] class 106
+  watermark detected: True, score: 572/572
+  saved 00106.png
+[107/166] class 107
+  watermark detected: True, score: 572/572
+  saved 00107.png
+[108/166] class 108
+  watermark detected: True, score: 572/572
+  saved 00108.png
+[109/166] class 109
+  watermark detected: True, score: 572/572
+  saved 00109.png
+[110/166] class 110
+  watermark detected: True, score: 572/572
+  saved 00110.png
+[111/166] class 111
+  watermark detected: True, score: 572/572
+  saved 00111.png
+[112/166] class 112
+  watermark detected: True, score: 572/572
+  saved 00112.png
+[113/166] class 113
+  watermark detected: True, score: 572/572
+  saved 00113.png
+[114/166] class 114
+  watermark detected: True, score: 572/572
+  saved 00114.png
+[115/166] class 115
+  watermark detected: True, score: 572/572
+  saved 00115.png
+[116/166] class 116
+  watermark detected: True, score: 572/572
+  saved 00116.png
+[117/166] class 117
+  watermark detected: True, score: 572/572
+  saved 00117.png
+[118/166] class 118
+  watermark detected: True, score: 572/572
+  saved 00118.png
+[119/166] class 119
+  watermark detected: True, score: 572/572
+  saved 00119.png
+[120/166] class 120
+  watermark detected: True, score: 572/572
+  saved 00120.png
+[121/166] class 121
+  watermark detected: True, score: 572/572
+  saved 00121.png
+[122/166] class 122
+  watermark detected: True, score: 572/572
+  saved 00122.png
+[123/166] class 123
+  watermark detected: True, score: 572/572
+  saved 00123.png
+[124/166] class 124
+  watermark detected: True, score: 572/572
+  saved 00124.png
+[125/166] class 125
+  watermark detected: True, score: 572/572
+  saved 00125.png
+[126/166] class 126
+  watermark detected: True, score: 572/572
+  saved 00126.png
+[127/166] class 127
+  watermark detected: True, score: 572/572
+  saved 00127.png
+[128/166] class 128
+  watermark detected: True, score: 572/572
+  saved 00128.png
+[129/166] class 129
+  watermark detected: True, score: 572/572
+  saved 00129.png
+[130/166] class 130
+  watermark detected: True, score: 572/572
+  saved 00130.png
+[131/166] class 131
+  watermark detected: True, score: 572/572
+  saved 00131.png
+[132/166] class 132
+  watermark detected: True, score: 572/572
+  saved 00132.png
+[133/166] class 133
+  watermark detected: True, score: 572/572
+  saved 00133.png
+[134/166] class 134
+  watermark detected: True, score: 572/572
+  saved 00134.png
+[135/166] class 135
+  watermark detected: True, score: 572/572
+  saved 00135.png
+[136/166] class 136
+  watermark detected: True, score: 572/572
+  saved 00136.png
+[137/166] class 137
+  watermark detected: True, score: 572/572
+  saved 00137.png
+[138/166] class 138
+  watermark detected: True, score: 572/572
+  saved 00138.png
+[139/166] class 139
+  watermark detected: True, score: 572/572
+  saved 00139.png
+[140/166] class 140
+  watermark detected: True, score: 572/572
+  saved 00140.png
+[141/166] class 141
+  watermark detected: True, score: 572/572
+  saved 00141.png
+[142/166] class 142
+  watermark detected: True, score: 572/572
+  saved 00142.png
+[143/166] class 143
+  watermark detected: True, score: 572/572
+  saved 00143.png
+[144/166] class 144
+  watermark detected: True, score: 572/572
+  saved 00144.png
+[145/166] class 145
+  watermark detected: True, score: 572/572
+  saved 00145.png
+[146/166] class 146
+  watermark detected: True, score: 572/572
+  saved 00146.png
+[147/166] class 147
+  watermark detected: True, score: 572/572
+  saved 00147.png
+[148/166] class 148
+  watermark detected: True, score: 572/572
+  saved 00148.png
+[149/166] class 149
+  watermark detected: True, score: 572/572
+  saved 00149.png
+[150/166] class 150
+  watermark detected: True, score: 572/572
+  saved 00150.png
+[151/166] class 151
+  watermark detected: True, score: 572/572
+  saved 00151.png
+[152/166] class 152
+  watermark detected: True, score: 572/572
+  saved 00152.png
+[153/166] class 153
+  watermark detected: True, score: 572/572
+  saved 00153.png
+[154/166] class 154
+  watermark detected: True, score: 572/572
+  saved 00154.png
+[155/166] class 155
+  watermark detected: True, score: 572/572
+  saved 00155.png
+[156/166] class 156
+  watermark detected: True, score: 572/572
+  saved 00156.png
+[157/166] class 157
+  watermark detected: True, score: 572/572
+  saved 00157.png
+[158/166] class 158
+  watermark detected: True, score: 572/572
+  saved 00158.png
+[159/166] class 159
+  watermark detected: True, score: 572/572
+  saved 00159.png
+[160/166] class 160
+  watermark detected: True, score: 572/572
+  saved 00160.png
+[161/166] class 161
+  watermark detected: True, score: 572/572
+  saved 00161.png
+[162/166] class 162
+  watermark detected: True, score: 572/572
+  saved 00162.png
+[163/166] class 163
+  watermark detected: True, score: 572/572
+  saved 00163.png
+[164/166] class 164
+  watermark detected: True, score: 572/572
+  saved 00164.png
+[165/166] class 165
+  watermark detected: True, score: 572/572
+  saved 00165.png
+[166/166] class 166
+  watermark detected: True, score: 572/572
+  saved 00166.png
+
+Done! Generated images 0 to 166

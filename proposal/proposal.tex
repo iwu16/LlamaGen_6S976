@@ -1,0 +1,86 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.75in,top=0.7in,bottom=0.7in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\parskip}{3pt plus 1pt minus 1pt}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+
+\date{April 14, 2026}
+
+\begin{document}
+
+\begin{center}
+    {\large \textbf{Undetectable Watermarking for Autoregressive Image Models: Does the CGZ Impossibility Transfer?}} \\[0.4em]
+    % {\large Precise Definitions, Method, and Pixel vs.~Latent Comparison} \\[0.8em]
+    {\small Raymond Bahng (\texttt{reugene@mit.edu}), Isabella Wu (\texttt{isawu888@mit.edu}), Maureen Zhang (\texttt{maureenz@mit.edu})} \\[0.4em]
+    {\small April 14, 2026}
+\end{center}
+\thispagestyle{empty}
+
+\paragraph{Background and Central Question:}
+Christ, Gunn, and Zamir (CGZ)~[1] construct an undetectable watermarking
+scheme for autoregressive language models and prove a fundamental
+impossibility (Section~6.2) that for any undetectable scheme on a prefix-specifiable model, a polynomial-time adversary can remove the watermark by re-generating the response one token at a time, since undetectability guarantees each conditional next-token distribution is
+statistically close to the clean model's.
+
+Our \textbf{central question} is: \emph{Can we define a weakened notion of undetectability, one that still ensures watermarked outputs are of "good quality" defined by some efficiently computable metric, under which Theorem~11 of CGZ [1] no longer applies?} We study this in the setting of autoregressive (AR) image models such as LlamaGen~[2], which sample discrete visual tokens sequentially. The key distinction from text is
+that visual tokens must be decoded through a VQ-VAE to produce pixels. An adversary attempting the CGZ removal attack faces a lossy VQ-VAE round-trip that may introduce visible artifacts, suggesting that successful removal necessarily degrades perceptual quality. This 
+motivates a relaxed notion of undetectability in which 
+indistinguishability is evaluated under perceptual metrics (FID, LPIPS) rather than total variation distance, and which may be both achievable and sufficient to resist practical removal.
+
+\paragraph{Related work.}
+For language models, Christ, Gunn, and Zamir~[1] construct an undetectable watermark and prove in Section 6.2 that any such scheme is inherently removable
+by a polynomial-time adversary who re-samples tokens autoregressively. For generative image models, Gunn, Zhao, and Song~[7] present the first provably
+undetectable watermark, using a pseudorandom error-correcting code (PRC) construction~[8] to select initial diffusion latents. They demonstrate quality
+preservation and robustness on a standard diffusion model. However, their scheme
+targets diffusion models, where randomness enters as continuous initial
+noise, and does not address AR image models, nor does it engage with the CGZ
+impossibility. Recent works~[3,4,5] apply heuristic watermarking to AR models such as 
+LlamaGen without formal undetectability guarantees or any analysis of 
+the CGZ removal argument. Zhao et al.~[6] study watermark removal via generative AI, but targeting pixel-level perturbations rather than the token-resampling attack we study. Our work is the first to
+formally examine CGZ undetectability and the CGZ Section~6.2 impossibility [1] for AR
+image models, identifying the VQ-VAE decode-encode path as a structural asymmetry with no text analog that may constrain the attack's effectiveness.
+
+\paragraph{Component 1: Definitional.}
+We adapt the CGZ undetectability game to the AR image setting and
+propose a formal relaxation suited to this domain. Concretely, we
+replace the total-variation distinguishing game with a
+\emph{perceptual undetectability} game, where no efficient adversary can
+distinguish watermarked from unwatermarked images under any efficiently
+computable perceptual metric (e.g.\ an LPIPS-based distinguisher). We then
+ask whether this relaxation evades the CGZ removal theorem in Section 6.2 [1]. We
+examine two necessary conditions for the attack to go through: (i)
+whether LlamaGen supports prefix-specifiability and (ii)~whether
+the adversary's regeneration via VQ-VAE decode--re-encode incurs
+distortion that the relaxed definition can detect. If the impossibility
+applies unchanged, we characterize the 
+quality cost of pixel-space regeneration relative to token-space 
+re-sampling and formalize any measurable gap as a proof sketch.
+
+\paragraph{Component 2: Empirical.}
+We implement CGZ watermarking on LlamaGen's sampling loop for class-conditional ImageNet generation (the scheme is token-semantic-agnostic and ports directly). We measure detection accuracy (TPR/FPR), FID degradation, and per-token entropy across spatial positions, characterizing where the CGZ entropy condition ($\geq\!\sqrt{L}$) holds and where it fails. We then red-team with three attacks:
+\begin{enumerate}[leftmargin=*,nosep,topsep=2pt]
+  \item \textbf{Token-by-token regeneration}: the Section~6.2 attack [1] applied to LlamaGen, testing feasibility (cost, prefix-specifiability) in the image setting.
+  \item \textbf{VQ-VAE decode--re-encode}: pass the watermarked image through the VQ-VAE encoder to obtain perturbed tokens. This image-specific attack has no text analog and tests whether the lossy round-trip removes the watermark and at what quality cost.
+  \item \textbf{Diffusion regeneration}: add noise and reconstruct with a separate diffusion model, testing cross-model removal.
+\end{enumerate}
+For each attack we report watermark survival rate versus quality degradation (LPIPS, FID). If every successful removal strategy degrades quality beyond a measurable threshold, this constitutes empirical evidence that the CGZ removal theorem [1] does not transfer cleanly to the image setting. Together, the two components of our project ask whether a perceptually relaxed notion of undetectability can evade the CGZ removal theorem 
+in the AR image setting.
+
+\vspace{0.2em}
+\noindent\textbf{References}\par\vspace{0.1em}
+\noindent{\footnotesize
+[1]~Christ, Gunn, Zamir, ``Undetectable Watermarks for Language Models,'' \textit{COLT}, 2024.\par
+[2]~Sun et al., ``Autoregressive Model Beats Diffusion: Llama for Scalable Image Generation,'' 2024.\par
+[3]~Jovanovi\'{c} et al., ``Watermarking Autoregressive Image Tokens,'' 2025.\par
+[4]~Wen et al., ``Tree-Ring Watermarks,'' \textit{NeurIPS}, 2023.\par
+[5]~Fernandez et al., ``Stable Signature,'' \textit{ICCV}, 2023.\par
+[6]~Zhao et al., ``Invisible Image Watermarks Are Provably Removable Using Generative AI,'' \textit{NeurIPS}, 2024.\par
+[7]~Gunn, Zhao, Song, ``An Undetectable Watermark for Generative Image Models,'' \textit{ICLR}, 2025.\par
+[8]~Christ, Gunn, ``Pseudorandom Error-Correcting Codes,'' \textit{CRYPTO}, 2024.\par
+}
+\end{document}

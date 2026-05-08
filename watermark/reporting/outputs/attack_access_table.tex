@@ -1,0 +1,9 @@
+\begin{tabular}{lrrrrl}
+\toprule
+Attack & AR queries & AR model & VQ encoder & Diffusion & Preserves original \\
+\midrule
+Token regeneration & 576 & yes & no & no & no \\
+VQ-VAE roundtrip & 0 & no & yes & no & yes \\
+Diffusion regeneration & 0 & no & yes, for detection/evaluation & yes & strength-dependent \\
+\bottomrule
+\end{tabular}
