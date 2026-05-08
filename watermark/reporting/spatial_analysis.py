@@ -17,8 +17,8 @@ OUTPUT_DIR = Path("watermark/reporting/outputs")
 change_maps = []
 for attacked_path in sorted(ATTACKED_ROOT.glob("*.pt")):
     i = int(attacked_path.stem)
-    orig_path = ORIG_ROOT / f"wm_{i:05d}.pt"
-    if not orig_path.exists():
+    orig_path = next(ORIG_ROOT.glob(f"*_wm_{i:05d}.pt"), None)
+    if orig_path is None:
         continue
     orig = torch.load(orig_path, map_location="cpu")
     attacked = torch.load(attacked_path, map_location="cpu")
