@@ -11,6 +11,6 @@ conda activate llamagen
 
 cd $HOME/LlamaGen_6S976
 
-python watermark/reporting/assumption1_verification.py \
+PYTHONPATH=$HOME/LlamaGen_6S976 python watermark/reporting/assumption1_verification.py \
     --root aggregated_samples \
     --n-images 200
