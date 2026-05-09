@@ -11,9 +11,9 @@ Raymond Bahng · Isabella Wu · Maureen Zhang
 Christ, Gunn, and Zamir (CGZ) prove that any undetectable watermark for autoregressive language models is removable by a polynomial-time adversary via token-by-token regeneration. We ask whether this impossibility transfers to autoregressive image models.
 
 We implement CGZ watermarking on [LlamaGen](https://github.com/FoundationVision/LlamaGen) and red-team it with three attacks:
-1. **Token-by-token regeneration** — the direct CGZ attack
-2. **VQ-VAE decode→re-encode** — an image-specific attack with no text analog
-3. **Diffusion regeneration** — pixel-space removal via Stable Diffusion
+1. **Token-by-token regeneration**: the direct CGZ attack
+2. **VQ-VAE decode→re-encode**: an image-specific attack with no text analog
+3. **Diffusion regeneration**: pixel-space removal via Stable Diffusion
 
 Our main finding is that CGZ removability is a latent-level phenomenon whose practical force at the image level depends on the adversary's query access and tolerance for instance-level change. Token regeneration removes the watermark completely. Zero-query image-space attacks behave differently: VQ-VAE roundtripping preserves image quality but mostly fails to remove the watermark, while diffusion regeneration succeeds only after inducing substantial latent disruption and measurable perceptual shift.
 
