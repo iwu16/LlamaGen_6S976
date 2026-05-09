@@ -1,132 +1,133 @@
-# Autoregressive Model Beats Diffusion: 🦙 Llama for Scalable Image Generation
+# Undetectable Watermarking for Autoregressive Image Models: Does the CGZ Impossibility Transfer?
 
+**MIT 6.S976/18.S996 — Cryptography and Machine Learning: Foundations and Frontiers, Spring 2026**
 
-<div align="center">
+Raymond Bahng · Isabella Wu · Maureen Zhang
 
-[![demo](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Online_Demo-blue)](https://huggingface.co/spaces/FoundationVision/LlamaGen)&nbsp;
-[![arXiv](https://img.shields.io/badge/arXiv%20paper-2406.06525-b31b1b.svg)](https://arxiv.org/abs/2406.06525)&nbsp;
-[![project page](https://img.shields.io/badge/Project_page-More_visualizations-green)](https://peizesun.github.io/llamagen/)&nbsp;
+---
 
-</div>
+## Overview
 
+Christ, Gunn, and Zamir (CGZ) prove that any undetectable watermark for autoregressive language models is removable by a polynomial-time adversary via token-by-token regeneration. We ask whether this impossibility transfers to autoregressive image models.
 
-<p align="center">
-<img src="assets/teaser.jpg" width=95%>
-<p>
+We implement CGZ watermarking on [LlamaGen](https://github.com/FoundationVision/LlamaGen) and red-team it with three attacks:
+1. **Token-by-token regeneration**: the direct CGZ attack
+2. **VQ-VAE decode→re-encode**: an image-specific attack with no text analog
+3. **Diffusion regeneration**: pixel-space removal via Stable Diffusion
 
+Our main finding is that CGZ removability is a latent-level phenomenon whose practical force at the image level depends on the adversary's query access and tolerance for instance-level change. Token regeneration removes the watermark completely. Zero-query image-space attacks behave differently: VQ-VAE roundtripping preserves image quality but mostly fails to remove the watermark, while diffusion regeneration succeeds only after inducing substantial latent disruption and measurable perceptual shift.
 
+---
 
-This repo contains pre-trained model weights and training/sampling PyTorch(torch>=2.1.0) codes used in
+## Key Results
 
-> [**Autoregressive Model Beats Diffusion: Llama for Scalable Image Generation**](https://arxiv.org/abs/2406.06525)<br>
-> [Peize Sun](https://peizesun.github.io/), [Yi Jiang](https://enjoyyi.github.io/), [Shoufa Chen](https://www.shoufachen.com/), [Shilong Zhang](https://jshilong.github.io/), [Bingyue Peng](), [Ping Luo](http://luoping.me/), [Zehuan Yuan](https://shallowyuan.github.io/)
-> <br>HKU, ByteDance<br>
+| Attack | Survival | Mean LPIPS | FID | Tokens changed |
+|---|---|---|---|---|
+| Baseline (no attack) | 100% | — | — | — |
+| Token regeneration | 0.0% | 0.673† | 43.17 | 100%† |
+| VQ-VAE roundtrip | 90.8% | 0.026 | 2.91 | 22.3% |
+| Diffusion regeneration (s=0.04) | 0.0% | 0.048 | 8.06 | 75.2% |
 
-You can find more visualizations on [![project page](https://img.shields.io/badge/Project_page-More_visualizations-green)](https://peizesun.github.io/llamagen/)
+†Token regeneration produces a fresh independent sample rather than editing the original image. LPIPS and token change reflect instance replacement, not corruption.
 
-## 🔥 Update
-- [2024.06.28] Image tokenizers and AR models for text-conditional image generation are released ! Try it !
-- [2024.06.15] All models ranging from 100M to 3B parameters are supported by vLLM ! 
-- [2024.06.11] Image tokenizers and AR models for class-conditional image generation are released !
-- [2024.06.11] Code and Demo are released !
+**Main finding:** The attacks separate along two axes — query access and instance preservation. Token regeneration uses 576 AR queries, discards the original image, and removes the watermark completely. Zero-query image-space attacks behave differently: VQ-VAE roundtripping preserves the image but mostly fails to remove the watermark; diffusion succeeds only at the cost of larger latent disruption and measurable perceptual shift.
 
-## 🌿 Introduction
-We introduce LlamaGen, a new family of image generation models that apply original ``next-token prediction`` paradigm of large language models to visual generation domain. It is an affirmative answer to whether vanilla autoregressive models, e.g., Llama, ``without inductive biases`` on visual signals can achieve state-of-the-art image generation performance if scaling properly. We reexamine design spaces of image tokenizers, scalability properties of image generation models, and their training data quality.
+---
 
-In this repo, we release:
-* Two image tokenizers of downsample ratio 16 and 8.
-* Seven class-conditional generation models ranging from 100M to 3B parameters.
-* Two text-conditional generation models of 700M parameters.
-* Online demos in  [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/FoundationVision/LlamaGen) for running pre-trained models.
-* Supported vLLM serving framework to enable 300% - 400% speedup.
+## Repository Structure
 
-## 🦄 Class-conditional image generation on ImageNet
-### VQ-VAE models
-Method | params | tokens | rFID (256x256) | weight
---- |:---:|:---:|:---:|:---:
-vq_ds16_c2i | 72M | 16x16 | 2.19 | [vq_ds16_c2i.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/vq_ds16_c2i.pt) 
-vq_ds16_c2i | 72M | 24x24 | 0.94 | above
-vq_ds16_c2i | 72M | 32x32 | 0.70 | above
-vq_ds8_c2i  | 70M | 32x32 | 0.59 | [vq_ds8_c2i.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/vq_ds8_c2i.pt)
-
-### AR models
-Method | params | training | tokens | FID (256x256) | weight 
---- |:---:|:---:|:---:|:---:|:---:|
-LlamaGen-B   | 111M | DDP | 16x16 | 5.46 | [c2i_B_256.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_B_256.pt)
-LlamaGen-B   | 111M | DDP | 24x24 | 6.09 | [c2i_B_384.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_B_384.pt)
-LlamaGen-L   | 343M | DDP | 16x16 | 3.80 | [c2i_L_256.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_L_256.pt)
-LlamaGen-L   | 343M | DDP | 24x24 | 3.07 | [c2i_L_384.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_L_384.pt)
-LlamaGen-XL  | 775M | DDP | 24x24 | 2.62 | [c2i_X_384L.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_XL_384.pt)
-LlamaGen-XXL | 1.4B | FSDP | 24x24 | 2.34 | [c2i_XXL_384.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_XXL_384.pt)
-LlamaGen-3B  | 3.1B | FSDP | 24x24 | 2.18 | [c2i_3B_384.pt](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/c2i_3B_384.pt)
-
-
-### Demo
-Please download models, put them in the folder `./pretrained_models`, and run
 ```
-python3 autoregressive/sample/sample_c2i.py --vq-ckpt ./pretrained_models/vq_ds16_c2i.pt --gpt-ckpt ./pretrained_models/c2i_L_384.pt --gpt-model GPT-L --image-size 384
-# or
-python3 autoregressive/sample/sample_c2i.py --vq-ckpt ./pretrained_models/vq_ds16_c2i.pt --gpt-ckpt ./pretrained_models/c2i_XXL_384.pt --gpt-model GPT-XXL --from-fsdp --image-size 384
+.
+├── autoregressive/          # LlamaGen sampling loop (modified for watermarking)
+├── watermark/               # CGZ watermark implementation and detection
+│   └── run_assumption1.sh   # Empirical verification of decoder distortion assumption
+├── results/                 # Attack results and figures
+├── paper/                   # Final paper
+├── proposal/                # Original project proposal
+├── logs/                    # Experiment logs
+├── run_generate.sh          # Generate watermarked and clean images
+├── run_token_regen.sh       # Run Attack 1 (token-by-token regeneration)
+├── run_partial_regen.sh     # Run partial regeneration experiments
+└── run_assumption1.sh       # Run decoder distortion lower bound verification
 ```
-The generated images will be saved to `sample_c2i.png`.
 
-### Gradio Demo <a href='https://github.com/gradio-app/gradio'><img src='https://img.shields.io/github/stars/gradio-app/gradio'></a>
+---
 
-You can use our online gradio demo [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/FoundationVision/LlamaGen) or run gradio locally:
+## Method
+
+### Watermark Implementation
+
+We implement a keyed green-list watermark in the spirit of CGZ/KGW directly in LlamaGen's autoregressive sampling loop for class-conditional ImageNet generation. At each generation step $t$, a secret key, the current position $t$, and the previous $m=4$ tokens are hashed via HMAC-SHA256 to partition the VQ codebook into a green half $G_t \subset [V]$ where $V = 16384$. After top-$k$ filtering ($k=2000$) and temperature scaling, the watermarked sampler zeros out red-token probabilities and samples from the renormalized green distribution. The first 4 tokens are sampled normally; the detector scores $L - m = 572$ positions.
+
+Detection computes $S_k(z) = |\{t \geq m : z_t \in G_t(c_t(z))\}|$ and declares a watermark present if $S_k(z) \geq \tau = 322.3$, derived from the toy-model soundness threshold at $\alpha = 0.01$. The threshold is validated empirically: FPR = 0.000 on 1,000 clean samples.
+
+### Dataset
+
+We generate 1,000 watermarked and 1,000 clean images using LlamaGen-L with classifier-free guidance scale 4.0, temperature 1.0, and top-$k=2000$, cycling through all 1,000 ImageNet classes. All images are 384×384 pixels decoded from 24×24 token grids via the pretrained VQ-VAE tokenizer.
+
+---
+
+## Setup
+
+### Requirements
+
+Follow the original LlamaGen setup:
+
 ```bash
-python app.py
+pip install -r requirements.txt
 ```
 
+Download pretrained models and place in `./pretrained_models/`:
+- `vq_ds16_c2i.pt` — VQ-VAE tokenizer
+- `c2i_L_384.pt` — LlamaGen-L class-conditional model
 
-## 🚀 Text-conditional image generation
-### VQ-VAE models
-Method | params | tokens | data | weight
---- |:---:|:---:|:---:|:---:
-vq_ds16_t2i | 72M | 16x16 | LAION COCO (50M) + internal data (10M) | [vq_ds16_t2i.pt](https://huggingface.co/peizesun/llamagen_t2i/resolve/main/vq_ds16_t2i.pt)
+### Generate Images
 
-### AR models
-Method | params | tokens | data | weight 
---- |:---:|:---:|:---:|:---:
-LlamaGen-XL  | 775M | 16x16 | LAION COCO (50M) | [t2i_XL_stage1_256.pt](https://huggingface.co/peizesun/llamagen_t2i/resolve/main/t2i_XL_stage1_256.pt)
-LlamaGen-XL  | 775M | 32x32 | internal data (10M) | [t2i_XL_stage2_512.pt](https://huggingface.co/peizesun/llamagen_t2i/resolve/main/t2i_XL_stage2_512.pt)
-
-### Demo
-Before running demo, please refer to [language readme](language/README.md) to install the required packages and language models.  
-
-Please download models, put them in the folder `./pretrained_models`, and run
+```bash
+bash run_generate.sh
 ```
-python3 autoregressive/sample/sample_t2i.py --vq-ckpt ./pretrained_models/vq_ds16_t2i.pt --gpt-ckpt ./pretrained_models/t2i_XL_stage1_256.pt --gpt-model GPT-XL --image-size 256
-# or
-python3 autoregressive/sample/sample_t2i.py --vq-ckpt ./pretrained_models/vq_ds16_t2i.pt --gpt-ckpt ./pretrained_models/t2i_XL_stage2_512.pt --gpt-model GPT-XL --image-size 512
+
+### Run Attacks
+
+```bash
+# Attack 1: Token-by-token regeneration
+python watermark/attack/token_regeneration/run.py
+
+# Attack 2: VQ-VAE decode→re-encode
+python watermark/attack/vqvae_roundtrip/run_attack2.py
+
+# Attack 3: Diffusion regeneration
+python watermark/attack/diffusion_regeneration/run.py
 ```
-The generated images will be saved to `sample_t2i.png`.
 
-### Local Gradio Demo
+---
 
+## Theoretical Contributions
 
+We develop a finite-codebook toy model that isolates the decoder/encoder bottleneck distinguishing autoregressive image models from text. Within this model we prove:
 
-## ⚡ Serving
-We use serving framework [vLLM](https://github.com/vllm-project/vllm) to enable higher throughput. Please refer to [serving readme](autoregressive/serve/README.md) to install the required packages.  
-```
-python3 autoregressive/serve/sample_c2i.py --vq-ckpt ./pretrained_models/vq_ds16_c2i.pt --gpt-ckpt ./pretrained_models/c2i_XXL_384.pt --gpt-model GPT-XXL --from-fsdp --image-size 384
-```
-The generated images will be saved to `sample_c2i_vllm.png`.
+- **Theorem 3.1** (One-shot latent undetectability): Averaged over the key, the watermarked token distribution is identical to the clean distribution. Note this does *not* imply fixed-key per-token TV closeness — for any fixed key, TV = 1/2.
+- **Theorem 3.2** (Soundness): Clean false-positive rate bounded at $\alpha$ via an Azuma–Hoeffding martingale argument.
+- **Theorem 3.3** (Completeness): Perfect detection of watermarked sequences.
+- **Theorem 3.4** (Latent closeness under strong undetectability): If a prefix-specifiable scheme has per-token TV closeness $\varepsilon$ for every fixed key, sequential regeneration produces output within $L\varepsilon$ of the clean distribution. Note: our half-green toy watermark does *not* satisfy this — TV = 1/2 per fixed key.
+- **Corollary 3.6** (Clean regeneration removal): An adversary with clean model access who discards the original and regenerates fresh tokens achieves detection probability $\leq \alpha$. This is the theoretical prediction confirmed by Attack 1.
+- **Theorem 3.8** (Latent-space removal requires image distortion): Under r-robustness and a decoder distortion lower bound, any attacked latent sequence that defeats the detector must incur image distortion $\geq \psi(r)$.
+- **Proposition D.1** (Separation): Perceptual undetectability does *not* imply strong latent undetectability — a concrete counterexample is given in Appendix D.
 
+---
 
-## Getting Started
-See [Getting Started](GETTING_STARTED.md) for installation, training and evaluation.
+## References
 
+- Christ, Gunn. *Pseudorandom Error-Correcting Codes.* CRYPTO 2024.
+- Christ, Gunn, Zamir. *Undetectable Watermarks for Language Models.* COLT 2024.
+- Gunn, Zhao, Song. *An Undetectable Watermark for Generative Image Models.* ICLR 2025.
+- Jovanović, Staab, Vechev. *Watermarking Autoregressive Image Tokens.* ICLR 2025.
+- Sun et al. *Autoregressive Model Beats Diffusion: Llama for Scalable Image Generation.* 2024.
+- Zhang et al. *The Unreasonable Effectiveness of Deep Features as a Perceptual Metric.* CVPR 2018.
+- Zhao et al. *Invisible Image Watermarks Are Provably Removable Using Generative AI.* NeurIPS 2024.
+
+---
 
 ## License
-The majority of this project is licensed under MIT License. Portions of the project are available under separate license of referred projects, detailed in corresponding files.
 
-
-## BibTeX
-```bibtex
-@article{sun2024autoregressive,
-  title={Autoregressive Model Beats Diffusion: Llama for Scalable Image Generation},
-  author={Sun, Peize and Jiang, Yi and Chen, Shoufa and Zhang, Shilong and Peng, Bingyue and Luo, Ping and Yuan, Zehuan},
-  journal={arXiv preprint arXiv:2406.06525},
-  year={2024}
-}
-```
+This project is built on LlamaGen, which is licensed under the MIT License.
